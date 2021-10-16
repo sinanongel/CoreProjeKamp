@@ -4,14 +4,16 @@ using DataAccessLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    partial class BlogContextModelSnapshot : ModelSnapshot
+    [Migration("20211016092342_mig_add_newsLetter_table")]
+    partial class mig_add_newsLetter_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,7 +166,7 @@ namespace DataAccessLayer.Migrations
                     b.Property<string>("ContactSubject")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ContactUserName")
+                    b.Property<string>("ContactUserName1")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ContactID");
