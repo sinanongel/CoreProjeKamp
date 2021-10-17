@@ -53,7 +53,7 @@
                             <a href="/Blog/Index/" class="btn btn-primary read-m">Blog Listesi</a>
                         </div>
                     }
-                    @await Component.InvokeAsync("CommentListByBlog", new { id = ViewBag.Id }) 
+                    @await Component.InvokeAsync("CommentListByBlog", new { id = ViewBag.Id })
                     @*@await Html.PartialAsync("~/Views/Comment/CommentListByBlog.cshtml")*@
                     @await Html.PartialAsync("~/Views/Comment/PartialAddComment.cshtml")
 
@@ -66,6 +66,7 @@
                         <div class="tech-btm">
                             <img src="~/Thema/images/banner1.jpg" class="img-fluid" alt="">
                         </div>
+                        <h4>Mail bülteni abone olun</h4>
                         @await Html.PartialAsync("~/Views/NewsLetter/SubscribeMail.cshtml")
                         @await Component.InvokeAsync("CategoryList")
                         @await Component.InvokeAsync("WriterLastBlog")
