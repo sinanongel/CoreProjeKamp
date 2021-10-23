@@ -12,8 +12,8 @@ namespace DataAccessLayer.Concrete
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer("server=DESKTOP-5S4H6I7; database=CoreBlogDb; integrated security=true;");
-            optionsBuilder.UseSqlServer("server=DESKTOP-MMIU4VA; database=CoreBlogDb; integrated security=true;");
+            optionsBuilder.UseSqlServer("server=DESKTOP-5S4H6I7; database=CoreBlogDb; integrated security=true;");
+            //optionsBuilder.UseSqlServer("server=DESKTOP-MMIU4VA; database=CoreBlogDb; integrated security=true;");
         }
         public DbSet<About> Abouts { get; set; }
         public DbSet<Blog> Blogs { get; set; }

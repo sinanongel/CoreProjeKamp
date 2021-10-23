@@ -9,7 +9,6 @@ namespace CoreBlog.Controllers
 {
     public class WriterController : Controller
     {
-        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
@@ -18,6 +17,10 @@ namespace CoreBlog.Controllers
         {
             return View();
         }
-
+        [AllowAnonymous]
+        public IActionResult Test()
+        {
+            return View();
+        }
     }
 }
