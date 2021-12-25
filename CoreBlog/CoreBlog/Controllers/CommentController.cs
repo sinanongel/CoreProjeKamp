@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
 using EntitiyLayer.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace CoreBlog.Controllers
 {
+    [AllowAnonymous]
     public class CommentController : Controller
     {
         CommentManager commentManager = new CommentManager(new EFCommentRepository());
@@ -22,7 +24,15 @@ namespace CoreBlog.Controllers
             return PartialView();
         }
         [HttpPost]
-        public PartialViewResult PartialAddComment(Comment p)
+        //public PartialViewResult PartialAddComment(Comment p)
+        //{
+        //    p.CommentDate = DateTime.Parse(DateTime.Now.ToShortDateString());
+        //    p.CommentStatus = true;
+        //    p.BlogID = 2;
+        //    commentManager.CommentAdd(p);
+        //    return PartialView();
+        //}
+        public IActionResult PartialAddComment(Comment p)
         {
             p.CommentDate = DateTime.Parse(DateTime.Now.ToShortDateString());
             p.CommentStatus = true;
