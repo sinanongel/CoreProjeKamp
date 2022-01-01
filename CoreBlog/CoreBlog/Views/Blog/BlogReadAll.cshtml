@@ -54,13 +54,10 @@
                         </div>
                     }
                     @await Component.InvokeAsync("CommentListByBlog", new { id = ViewBag.Id })
-                    @*@await Html.PartialAsync("~/Views/Comment/CommentListByBlog.cshtml")*@
-
                         <div class="comment-top">
                             <h4>Yorum Yapın</h4>
                             @await Html.PartialAsync("~/Views/Comment/PartialAddComment.cshtml")
                          </div>
-
                     </div>
 
                     <!--//left-->

@@ -24,14 +24,6 @@ namespace CoreBlog.Controllers
             return PartialView();
         }
         [HttpPost]
-        //public PartialViewResult PartialAddComment(Comment p)
-        //{
-        //    p.CommentDate = DateTime.Parse(DateTime.Now.ToShortDateString());
-        //    p.CommentStatus = true;
-        //    p.BlogID = 2;
-        //    commentManager.CommentAdd(p);
-        //    return PartialView();
-        //}
         public IActionResult PartialAddComment(Comment p)
         {
             p.CommentDate = DateTime.Parse(DateTime.Now.ToShortDateString());
