@@ -30,4 +30,8 @@
     <ProjectReference Include="..\EntitiyLayer\EntitiyLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\WriterImageFiles\" />
+  </ItemGroup>
+
 </Project>
