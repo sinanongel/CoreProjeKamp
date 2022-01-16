@@ -91,28 +91,13 @@ namespace CoreBlog.Controllers
         {
             WriterValidator validationRules = new WriterValidator();
             ValidationResult result = validationRules.Validate(p);
-            //Writer writer = new Writer();
 
-            //if (p.WriterImage != null)
-            //{
-            //    var extension = Path.GetExtension(p.WriterImage.FileName);
-            //    var newImageName = Guid.NewGuid() + extension;
-            //    var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/WriterImageFiles/", newImageName);
-            //    var stream = new FileStream(location, FileMode.Create);
-            //    p.WriterImage.CopyTo(stream);
-            //    writer.WriterImage = newImageName;
-
-            //}
             if (result.IsValid && p.WriterPasword == passwordAgain)
             {
                 if (WriterImageFile != null)
                 {
                     p.WriterImage = AddProfileImage.ImageAdd(WriterImageFile);
                 }
-                //writer.WriterMail = p.WriterMail;
-                //writer.WriterName = p.WriterName;
-                //writer.WriterPasword = p.WriterPasword;
-                //writer.WriterAbout = p.WriterAbout;
                 p.WriterStatus = true;
                 writerManager.TAdd(p);
                 return RedirectToAction("Index", "Dashboard");
