@@ -5,6 +5,7 @@ using DataAccessLayer.EntityFramework;
 using EntitiyLayer.Concrete;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -45,25 +46,36 @@ namespace CoreBlog.Controllers
         public IActionResult WriterEditProfile()
         {
             var writerValues = writerManager.TGetById(1);
+            ViewBag.Password = writerValues.WriterPasword;
             return View(writerValues);
         }
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult WriterEditProfile(Writer p)
+        public IActionResult WriterEditProfile(Writer p, string passwordAgain, IFormFile WriterImageFile)
         {
             WriterValidator wv = new WriterValidator();
             ValidationResult result = wv.Validate(p);
-            if (result.IsValid)
+
+            if (result.IsValid && p.WriterPasword == passwordAgain)
             {
+                if (WriterImageFile != null)
+                {
+                    p.WriterImage = AddProfileImage.ImageAdd(WriterImageFile);
+                }
+                p.WriterStatus = true;
                 writerManager.TUpdate(p);
                 return RedirectToAction("Index", "Dashboard");
             }
-            else
+            else if (!result.IsValid)
             {
-                foreach(var item in result.Errors)
+                foreach (var item in result.Errors)
                 {
                     ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
                 }
+            }
+            else if (p.WriterPasword != passwordAgain)
+            {
+                ModelState.AddModelError("WriterPasword", "Girdiğiniz şifreler uyuşmuyor, tekrar deneyiniz.");
             }
             return View();
         }
@@ -75,24 +87,48 @@ namespace CoreBlog.Controllers
         }
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult WriterAdd(AddProfileImage p)
+        public IActionResult WriterAdd(Writer p, string passwordAgain, IFormFile WriterImageFile)
         {
-            Writer writer = new Writer();
-            if (p.WriterImage != null)
+            WriterValidator validationRules = new WriterValidator();
+            ValidationResult result = validationRules.Validate(p);
+            //Writer writer = new Writer();
+
+            //if (p.WriterImage != null)
+            //{
+            //    var extension = Path.GetExtension(p.WriterImage.FileName);
+            //    var newImageName = Guid.NewGuid() + extension;
+            //    var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/WriterImageFiles/", newImageName);
+            //    var stream = new FileStream(location, FileMode.Create);
+            //    p.WriterImage.CopyTo(stream);
+            //    writer.WriterImage = newImageName;
+
+            //}
+            if (result.IsValid && p.WriterPasword == passwordAgain)
             {
-                var extension = Path.GetExtension(p.WriterImage.FileName);
-                var newImageName = Guid.NewGuid() + extension;
-                var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/WriterImageFiles/", newImageName);
-                var stream = new FileStream(location, FileMode.Create);
-                p.WriterImage.CopyTo(stream);
-                writer.WriterImage = newImageName;
+                if (WriterImageFile != null)
+                {
+                    p.WriterImage = AddProfileImage.ImageAdd(WriterImageFile);
+                }
+                //writer.WriterMail = p.WriterMail;
+                //writer.WriterName = p.WriterName;
+                //writer.WriterPasword = p.WriterPasword;
+                //writer.WriterAbout = p.WriterAbout;
+                p.WriterStatus = true;
+                writerManager.TAdd(p);
+                return RedirectToAction("Index", "Dashboard");
             }
-            writer.WriterMail = p.WriterMail;
-            writer.WriterName = p.WriterName;
-            writer.WriterPasword = p.WriterPasword;
-            writer.WriterAbout = p.WriterAbout;
-            writerManager.TAdd(writer);
-            return RedirectToAction("Index", "Dashboard");
+            else if (!result.IsValid)
+            {
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+                }
+            }
+            else if (p.WriterPasword != passwordAgain)
+            {
+                ModelState.AddModelError("WriterPasword", "Girdiğiniz şifreler uyuşmuyor, tekrar deneyiniz.");
+            }
+            return View();
         }
     }
 }
