@@ -25,7 +25,7 @@ namespace BusinessLayer.Concrete
 
         public List<Notification> GetLast3Notification()
         {
-            return _notificationDal.GetListAll().OrderByDescending(x=>x.NotificationDate).Take(3).ToList();
+            return _notificationDal.GetListAll().Where(x => x.NotificationStatus == true).OrderByDescending(x => x.NotificationDate).Take(3).ToList();
         }
 
         public void TAdd(Notification t)
