@@ -13,7 +13,7 @@ namespace CoreBlog.ViewComponents.Writer
         NotificationManager notificationManager = new NotificationManager(new EFNotificationRepository());
         public IViewComponentResult Invoke()
         {
-            var values = notificationManager.GetList();
+            var values = notificationManager.GetLast3Notification();
             return View(values);
         }
     }

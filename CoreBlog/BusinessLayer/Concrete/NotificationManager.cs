@@ -23,6 +23,11 @@ namespace BusinessLayer.Concrete
             return _notificationDal.GetListAll();
         }
 
+        public List<Notification> GetLast3Notification()
+        {
+            return _notificationDal.GetListAll().OrderByDescending(x=>x.NotificationDate).Take(3).ToList();
+        }
+
         public void TAdd(Notification t)
         {
             throw new NotImplementedException();
