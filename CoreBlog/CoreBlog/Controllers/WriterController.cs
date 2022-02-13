@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Concrete;
 using BusinessLayer.ValidationRules;
 using CoreBlog.Models;
+using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
 using EntitiyLayer.Concrete;
 using FluentValidation.Results;
@@ -18,8 +19,14 @@ namespace CoreBlog.Controllers
     public class WriterController : Controller
     {
         WriterManager writerManager = new WriterManager(new EFWriterRepository());
+        BlogContext blogContext = new BlogContext();
+        [Authorize]
         public IActionResult Index()
         {
+            var userMail = User.Identity.Name;
+            var writerName = blogContext.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterName).FirstOrDefault();
+            ViewBag.wn = writerName;
+            ViewBag.v = userMail;
             return View();
         }
         public IActionResult WriterProfile()
@@ -41,15 +48,15 @@ namespace CoreBlog.Controllers
         {
             return PartialView();
         }
-        [AllowAnonymous]
         [HttpGet]
         public IActionResult WriterEditProfile()
         {
-            var writerValues = writerManager.TGetById(1);
+            var userMail = User.Identity.Name;
+            var writerID = blogContext.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterID).FirstOrDefault();
+            var writerValues = writerManager.TGetById(writerID);
             ViewBag.Password = writerValues.WriterPasword;
             return View(writerValues);
         }
-        [AllowAnonymous]
         [HttpPost]
         public IActionResult WriterEditProfile(Writer p, string passwordAgain, IFormFile WriterImageFile)
         {

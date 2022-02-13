@@ -10,7 +10,6 @@ namespace CoreBlog.Controllers
 {
     public class DashboardController : Controller
     {
-        [AllowAnonymous]
         public IActionResult Index()
         {
             BlogContext context = new BlogContext();
