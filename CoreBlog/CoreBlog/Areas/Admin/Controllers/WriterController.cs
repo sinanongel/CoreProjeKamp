@@ -26,6 +26,19 @@ namespace CoreBlog.Areas.Admin.Controllers
             var jsonWriters = JsonConvert.SerializeObject(findWriter);
             return Json(jsonWriters);
         }
+        [HttpPost]
+        public IActionResult AddWriter(WriterClass w)
+        {
+            writers.Add(w);
+            var jsonWriters = JsonConvert.SerializeObject(w);
+            return Json(jsonWriters);
+        }
+        public IActionResult DeleteWriter(int Id)
+        {
+            var writer = writers.FirstOrDefault(x => x.Id == Id);
+            writers.Remove(writer);
+            return Json(writer);
+        }
 
         public static List<WriterClass> writers = new List<WriterClass>
         {
