@@ -1,3 +1,4 @@
+using DataAccessLayer.Concrete;
 using EntitiyLayer.Concrete;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -28,8 +29,13 @@ namespace CoreBlog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DbContext>();
-            services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<DbContext>();
+            services.AddDbContext<BlogContext>();
+            services.AddIdentity<AppUser, AppRole>(x=>
+            {
+                x.Password.RequireUppercase = false;
+                x.Password.RequireNonAlphanumeric = false;
+            })
+                .AddEntityFrameworkStores<BlogContext>();
             services.AddControllersWithViews();
 
             //services.AddSession();
@@ -84,6 +90,10 @@ namespace CoreBlog
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                //endpoints.MapControllerRoute(
+                //    name: "default",
+                //    pattern: "{controller=RegisterUser}/{action=Index}/{id?}");
             });
         }
     }

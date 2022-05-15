@@ -29,6 +29,11 @@ namespace CoreBlog.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(UserSignUpViewModel p)
         {
+            if (!p.IsAcceptTheContract)
+            {
+                ModelState.AddModelError("IsAcceptTheContract", "Sayfamıza kayıt olabilmek için kullanım şartlarını kabul etmeniz gerekmektedir.");
+                return View(p);
+            }
             if (ModelState.IsValid)
             {
                 AppUser user = new AppUser()
