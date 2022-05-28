@@ -98,13 +98,13 @@ namespace CoreBlog
                   name: "areas",
                   pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-
                 //endpoints.MapControllerRoute(
                 //    name: "default",
-                //    pattern: "{controller=RegisterUser}/{action=Index}/{id?}");
+                //    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=RegisterUser}/{action=Index}/{id?}");
             });
         }
     }

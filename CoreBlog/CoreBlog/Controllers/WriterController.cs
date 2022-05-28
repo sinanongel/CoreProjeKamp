@@ -20,6 +20,7 @@ namespace CoreBlog.Controllers
     {
         WriterManager writerManager = new WriterManager(new EFWriterRepository());
         BlogContext blogContext = new BlogContext();
+
         [Authorize]
         public IActionResult Index()
         {
@@ -51,10 +52,10 @@ namespace CoreBlog.Controllers
         [HttpGet]
         public IActionResult WriterEditProfile()
         {
-            var userMail = User.Identity.Name;
+            var userName = User.Identity.Name;
+            var userMail = blogContext.Users.Where(x => x.UserName == userName).Select(y => y.Email).FirstOrDefault();
             var writerID = blogContext.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterID).FirstOrDefault();
             var writerValues = writerManager.TGetById(writerID);
-            ViewBag.Password = writerValues.WriterPasword;
             return View(writerValues);
         }
         [HttpPost]
