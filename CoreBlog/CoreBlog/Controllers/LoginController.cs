@@ -46,39 +46,10 @@ namespace CoreBlog.Controllers
             }
             return View();
         }
-
-        //[HttpPost]
-        //public async Task<IActionResult> Index(Writer p)
-        //{
-        //    BlogContext blogContext = new BlogContext();
-        //    var dataValue = blogContext.Writers.FirstOrDefault(x => x.WriterMail == p.WriterMail && x.WriterPasword == p.WriterPasword);
-        //    if (dataValue != null)
-        //    {
-        //        var claims = new List<Claim>
-        //        {
-        //            new Claim(ClaimTypes.Name,p.WriterMail)
-        //        };
-        //        var userIdentity = new ClaimsIdentity(claims, "a");
-        //        ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
-        //        await HttpContext.SignInAsync(principal);
-        //        return RedirectToAction("Index", "Dashboard");
-        //    }
-        //    else
-        //    {
-        //        return View();
-        //    }
-        //}
+        public async Task<IActionResult> LogOut()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Login");
+        }
     }
 }
-
-//BlogContext blogContext = new BlogContext();
-//var dataValue = blogContext.Writers.FirstOrDefault(x => x.WriterMail == p.WriterMail && x.WriterPasword == p.WriterPasword);
-//if (dataValue != null)
-//{
-//    HttpContext.Session.SetString("username", p.WriterMail);
-//    return RedirectToAction("Index", "Writer");
-//}
-//else
-//{
-//    return View();
-//}
