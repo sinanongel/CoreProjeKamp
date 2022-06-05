@@ -60,7 +60,7 @@ namespace CoreBlog
             {
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(100);
                 options.AccessDeniedPath = new PathString("/Login/AccesDenied");
                 options.LoginPath = "/Login/Index/";
                 options.SlidingExpiration = true;

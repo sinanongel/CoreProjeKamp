@@ -7,19 +7,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CoreBlog.ViewComponents.Writer
+namespace CoreBlog.Areas.Admin.Controllers
 {
-    public class WriterMessageNotification : ViewComponent
+    [Area("Admin")]
+    public class AdminMessageController : Controller
     {
         Message2Manager message2Manager = new Message2Manager(new EFMessage2Repository());
         BlogContext blogContext = new BlogContext();
-        public IViewComponentResult Invoke()
+        public IActionResult Inbox()
         {
             var username = User.Identity.Name;
             var userMail = blogContext.Users.Where(x => x.UserName == username).Select(y => y.Email).FirstOrDefault();
             var writerID = blogContext.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterID).FirstOrDefault();
             var values = message2Manager.GetInboxListByWriter(writerID);
             return View(values);
+        }
+        public IActionResult SendBox()
+        {
+            var username = User.Identity.Name;
+            var userMail = blogContext.Users.Where(x => x.UserName == username).Select(y => y.Email).FirstOrDefault();
+            var writerID = blogContext.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterID).FirstOrDefault();
+            var values = message2Manager.GetSendboxListByWriter(writerID);
+            return View(values);
+        }
+        public IActionResult ComposeMessage()
+        {
+            return View();
         }
     }
 }
