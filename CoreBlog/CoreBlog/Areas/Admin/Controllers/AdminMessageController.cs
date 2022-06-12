@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Concrete;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
+using EntitiyLayer.Concrete;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -30,9 +31,23 @@ namespace CoreBlog.Areas.Admin.Controllers
             var values = message2Manager.GetSendboxListByWriter(writerID);
             return View(values);
         }
+        [HttpGet]
         public IActionResult ComposeMessage()
         {
             return View();
+        }
+        [HttpPost]
+        public IActionResult ComposeMessage(Message2 p)
+        {
+            var username = User.Identity.Name;
+            var userMail = blogContext.Users.Where(x => x.UserName == username).Select(y => y.Email).FirstOrDefault();
+            var writerID = blogContext.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterID).FirstOrDefault();
+            p.SenderID = writerID;
+            p.ReceiverID = 2;
+            p.MessageDate = Convert.ToDateTime(DateTime.Now.ToShortDateString());
+            p.MessageStatus = true;
+            message2Manager.TAdd(p);
+            return RedirectToAction("SendBox");
         }
     }
 }
