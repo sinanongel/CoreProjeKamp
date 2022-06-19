@@ -1,6 +1,7 @@
 ﻿using CoreBlog.Areas.Admin.Models;
 using CoreBlog.Models;
 using EntitiyLayer.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 namespace CoreBlog.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles ="Admin, Moderator")]
     public class AdminRoleController : Controller
     {
         private readonly RoleManager<AppRole> _roleManager;
@@ -110,6 +112,24 @@ namespace CoreBlog.Areas.Admin.Controllers
                 model.Add(m);
             }
             return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AssignRole(List<RoleAssignViewModel> model)
+        {
+            var userId = (int)TempData["UserId"];
+            var user = _userManager.Users.FirstOrDefault(x => x.Id == userId);
+            foreach (var item in model)
+            {
+                if (item.Exists)
+                {
+                    await _userManager.AddToRoleAsync(user, item.Name);
+                }
+                else
+                {
+                    await _userManager.RemoveFromRoleAsync(user, item.Name);
+                }
+            }
+            return RedirectToAction("UserRoleList");
         }
     }
 }
